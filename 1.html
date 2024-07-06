@@ -1,45 +1,316 @@
-<style>body {
- background: #222;
- background: radial-gradient(#000, hsl(200deg, 30%, 6%));
- color: #aaa;
- font-family: Questrial, Arial, Helvetica, Sans Serif;
- margin-top: 8px;
-}
 
-h1 {
- font-size: 1.2em;
- font-weight: normal;
- font-family: Questrial;
- text-align: center;
- color: #fff;
-}
 
-h2 { 
- text-align: center;
- color: #ff0048;
-}
 
-h3 { 
- text-align: center;
- color: #fff
-}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Red Neon Player</title>
+  <!-- Link to Font Awesome for Telegram icon -->
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/5.15.4/css/all.min.css">
+  <style>
+    /* CSS for comment section */
+    body {
+        margin: 0;
+        padding: 0;
+        font-family: Arial, sans-serif;
+        background-color: #111; /* Dark background to enhance glow effect */
+      }
+      header {
+        background-color: transparent;
+        padding: 20px 0;
+        text-align: center;
+        color: white;
+        font-size: 24px;
+        text-shadow: 0 0 10px red; /* Adding a glowing effect to text */
+      }
+      #video-container {
+        width: 100%;
+        padding-top: 56.25%; /* 16:9 Aspect Ratio */
+        position: relative;
+        overflow: hidden;
+        box-shadow: 0 0 20px 10px red; /* Box shadow to create glowing neon effect */
+      }
+      #jw-player {
+        position: absolute;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+      }
+      .comments {
+        background-color: #333;
+        color: white;
+        padding: 20px;
+        margin-top: 20px;
+        border-radius: 10px;
+        box-shadow: 0 0 20px 10px red; /* Adding a glowing effect to the comment section */
+        max-height: 400px; /* Limiting the height */
+        overflow-y: auto; /* Adding scrollbar when content exceeds the height */
+      }
+      .comment {
+        padding: 10px;
+        margin-bottom: 10px;
+        border-radius: 10px;
+        display: flex;
+        align-items: center;
+      }
+      .comment:nth-child(odd) {
+        background-color: rgba(
+          255,
+          0,
+          0,
+          0.5
+        ); /* Reddish glow for odd comments */
+      }
+      .comment:nth-child(even) {
+        background-color: rgba(
+          255,
+          0,
+          0,
+          0.3
+        ); /* Slightly lighter glow for even comments */
+      }
+      .comment-content {
+        flex: 1;
+        padding-right: 20px;
+        word-wrap: break-word;
+      }
+      .comment-icon {
+        font-size: 24px;
+        color: #2ca5e0; /* Telegram Blue */
+        margin-right: 10px;
+      }
+      .comment-form {
+        margin-top: 20px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+      .comment-input {
+        width: 60%;
+        padding: 10px;
+        border-radius: 5px;
+        border: 1px solid #ccc;
+        margin-right: 10px;
+      }
+      .comment-submit {
+        background-color: red;
+        color: white;
+        padding: 10px 20px;
+        border: none;
+        border-radius: 5px;
+        cursor: pointer;
+      }
+    .reply-form {
+      margin-top: 10px;
+    }
+    .reply-form textarea {
+      width: calc(100% - 80px);
+      resize: vertical;
+    }
+    .reply-form button {
+      margin-top: 5px;
+    }
+  </style>
+    <script disable-devtool-auto="true" src="https://cdn.jsdelivr.net/npm/disable-devtool" clear-log="true" disable-select="false" disable-copy="false" disable-cut="true" disable-paste="true"></script>
 
-.vjs-icon-captions:before,
-.vjs-cosmos:lang(en) .vjs-subs-caps-button .vjs-icon-placeholder:before,
-.vjs-cosmos:lang(fr-CA) .vjs-subs-caps-button .vjs-icon-placeholder:before,
-.vjs-cosmos .vjs-captions-button .vjs-icon-placeholder:before {
-  content: "\f165";
-}
+</head>
+<body>
+  <header></header>
 
-</style>
-
- <div class="player-container">
-    <video-js id="cosmos-player" class="vjs-cosmos vjs-16-9 vjs-show-big-play-button-on-pause" controls poster="https://raw.githubusercontent.com/EmilioSG11/videojs-cosmos-skin/main/images/bbunny.jpg" playsinline> 
-      <source src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" type="" />
-
-       
-
-       <!-- Subtitles, Chapters, etc -->
-      <!-- <track kind="" src="" srclang="" label="" default> -->
-    </video-js>
+  <div id="video-container">
+    <div id="jw-player">
+      <div id="jwplayerDiv"></div>
+    </div>
   </div>
+
+  
+    <button class="comment-submit" onclick="addComment()">
+      <i class="fab fa-telegram-plane"></i>
+      <!-- Telegram icon -->
+    </button>
+  </div>
+
+  <!-- JWPlayer Setup -->
+  <script src="https://content.jwplatform.com/libraries/SAHhwvZq.js"></script>
+
+  <script>
+    // JWPlayer setup code (unchanged from your original code)
+
+
+  jwplayer("jwplayerDiv").setup({
+    file: "https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8",
+    type: "video/mp4",
+    logo: {
+      file: "https://uace17cn.codepad.live/filaxxsports.png", // Apne telegram channel ka logo ka URL yahan par den
+      link: "https://t.me/Livecricket_ABOT" // Apne telegram channel ka link yahan par den
+    }
+  });
+  
+  
+    // Function to toggle reply form visibility
+    function toggleReplyForm(comment) {
+      var replyForm = comment.querySelector('.reply-form');
+      replyForm.style.display = replyForm.style.display === 'none' ? 'block' : 'none';
+    }
+
+    // Attach click event listener to all reply buttons
+    var replyButtons = document.querySelectorAll('.reply-button');
+    replyButtons.forEach(function(replyButton) {
+      replyButton.addEventListener('click', function() {
+        var comment = this.closest('.comment');
+        toggleReplyForm(comment);
+      });
+    });
+
+    // Function to handle reply submission
+    function submitReply(comment) {
+      var replyInput = comment.querySelector('.reply-input').value;
+      // Here you can handle submission of reply (e.g., send it to server, add it to comments list, etc.)
+      // For demonstration, let's just log the reply to console
+      console.log('Reply:', replyInput);
+      // Clear reply input field
+      comment.querySelector('.reply-input').value = '';
+      // Hide reply form
+      toggleReplyForm(comment);
+    }
+
+    // Attach click event listener to all submit reply buttons
+    var submitReplyButtons = document.querySelectorAll('.submit-reply');
+    submitReplyButtons.forEach(function(submitReplyButton) {
+      submitReplyButton.addEventListener('click', function() {
+        var comment = this.closest('.comment');
+        submitReply(comment);
+      });
+    });
+
+    // Function to scroll comment div to bottom
+    function scrollCommentDivToBottom() {
+      var commentDiv = document.getElementById("comments-section");
+      commentDiv.scrollTop = commentDiv.scrollHeight;
+    }
+
+    // Function to check for new comments (replace this with your actual logic)
+    function checkForNewComments() {
+      // Example logic to check for new comments
+      var newCommentsExist = true; // Replace this with your actual logic to check for new comments
+      return newCommentsExist;
+    }
+
+    // Function to continuously check for new comments and scroll to bottom if they exist
+    function autoScrollCommentDiv() {
+      // Check for new comments at a certain interval (every 1 second in this example)
+      setInterval(function() {
+        if (checkForNewComments()) {
+          // If new comments exist, scroll comment div to bottom
+          scrollCommentDivToBottom();
+        }
+      }, 1000); // Adjust the interval as needed
+    }
+
+    // Start auto scrolling comment div
+    autoScrollCommentDiv();
+    
+    
+      function submitOnEnter(event) {
+  if (event.keyCode === 13) {
+    addComment();
+  }
+}
+
+function addComment() {
+  var commentInput = document.getElementById("comment-input").value;
+  if (commentInput.trim() !== "") {
+    var xhr = new XMLHttpRequest();
+    xhr.onreadystatechange = function() {
+      if (xhr.readyState === 4 && xhr.status === 200) {
+        loadComments(); // Reload comments after posting
+        document.getElementById("comment-input").value = ""; // Clear input field after adding comment
+      }
+    };
+    xhr.open("POST", "add_comment.php", true);
+    xhr.setRequestHeader("Content-type", "application/x-www-form-urlencoded");
+    xhr.send("comment=" + encodeURIComponent(commentInput));
+  }
+}
+
+function loadComments() {
+  var xhr = new XMLHttpRequest();
+  xhr.onreadystatechange = function() {
+    if (xhr.readyState === 4 && xhr.status === 200) {
+      var commentsSection = document.getElementById("comments-section");
+      var shouldScrollToBottom = commentsSection.scrollTop === commentsSection.scrollHeight - commentsSection.clientHeight; // Check if already scrolled to bottom
+      
+      commentsSection.innerHTML = xhr.responseText;
+      
+      if (shouldScrollToBottom) {
+        commentsSection.scrollTop = commentsSection.scrollHeight; // Scroll to bottom if already at bottom
+      }
+    }
+  };
+  xhr.open("GET", "get_comments.php", true);
+  xhr.send();
+}
+
+// Load comments initially and then update every second
+window.onload = function() {
+  loadComments();
+  setInterval(loadComments, 1000); // Refresh comments every second
+};
+
+
+// Function to retrieve a random Indian name from the list
+function getRandomIndianName() {
+var names = [
+        "Aarav", "Aarush", "Advait", "Aryan", "Dev", "Dhruv", "Ishaan", "Kabir", "Reyansh", "Rudra", "Shaurya", "Vihaan",
+  "Aadhya", "Aanya", "Aaradhya", "Ananya", "Avni", "Ishani", "Kiara", "Myra", "Navya", "Saanvi", "Sia", "Siya",
+  "Aahana", "Anika", "Anaya", "Avni", "Ira", "Ishita", "Kavya", "Kiara", "Kyra", "Myra", "Navya", "Pari",
+  "Advika", "Amaira", "Anvi", "Arya", "Chahat", "Hritvi", "Ira", "Ishika", "Kiara", "Kiya", "Myra", "Pari",
+  "Aadya", "Aaradhya", "Anaya", "Anvi", "Chhavi", "Diya", "Gauri", "Ira", "Kavya", "Kimaya", "Kyra", "Pihu",
+  "Aanya", "Aaradhya", "Amaira", "Anaya", "Chahat", "Gauri", "Ishita", "Kaira", "Kimaya", "Kiya", "Pihu", "Riya",
+  "Aadya", "Aanya", "Amaira", "Anika", "Chhavi", "Diya", "Gauri", "Ira", "Kaira", "Kiya", "Pihu", "Riya",
+  "Aadhya", "Aanya", "Amaira", "Anika", "Anvi", "Diya", "Gauri", "Ishika", "Kaira", "Kiya", "Pihu", "Riya",
+  "Aadhya", "Aaradhya", "Aisha", "Anaya", "Anvi", "Diya", "Gauri", "Ishita", "Kaira", "Kiya", "Pihu", "Riya",
+  "Aadhya", "Aanya", "Amaira", "Anika", "Anvi", "Chhavi", "Gauri", "Ira", "Kaira", "Kiya", "Pihu", "Riya",
+  "Aadhya", "Aanya", "Amaira", "Anaya", "Anvi", "Diya", "Gauri", "Ishita", "Kaira", "Kiya", "Pihu", "Riya",
+  "Aadhya", "Aaradhya", "Aisha", "Anika", "Anvi", "Chhavi", "Gauri", "Ishita", "Kaira", "Kiya", "Pihu", "Riya",
+  "Aaradhya", "Aanya", "Amaira", "Anika", "Anvi", "Diya", "Gauri", "Ishita", "Kaira", "Kiya", "Pihu", "Riya",
+  "Aaradhya", "Aanya", "Amaira", "Anika", "Anvi", "Chhavi", "Gauri", "Ira", "Kaira", "Kiya", "Pihu", "Riya",
+  "Aaradhya", "Aanya", "Amaira", "Anika", "Anvi", "Diya", "Gauri", "Ishita", "Kaira", "Kiya", "Pihu", "Riya",
+  "Aaradhya", "Aanya", "Amaira", "Anaya", "Anvi", "Chhavi", "Gauri", "Ishika", "Kaira", "Kiya", "Pihu", "Riya",
+  "Aarav", "Aarush", "Advait", "Aryan", "Dev",
+        ];
+  var randomIndex = Math.floor(Math.random() * names.length);
+  return names[randomIndex];
+}
+
+// Function to set a cookie
+function setCookie(name, value, days) {
+  var expires = "";
+  if (days) {
+    var date = new Date();
+    date.setTime(date.getTime() + (days * 24 * 60 * 60 * 1000));
+    expires = "; expires=" + date.toUTCString();
+  }
+  document.cookie = name + "=" + (value || "") + expires + "; path=/";
+}
+
+// Function to get a cookie
+function getCookie(name) {
+  var nameEQ = name + "=";
+  var ca = document.cookie.split(';');
+  for (var i = 0; i < ca.length; i++) {
+    var c = ca[i];
+    while (c.charAt(0) == ' ') c = c.substring(1, c.length);
+    if (c.indexOf(nameEQ) == 0) return c.substring(nameEQ.length, c.length);
+  }
+  return null;
+}
+
+    // Your existing functions (submitOnEnter, addComment, loadComments, getRandomIndianName, setCookie, getCookie) remain unchanged
+  </script>
+<script>(function(){if (!document.body) return;var js = "window['__CF$cv$params']={r:'86beddff5d089f76',t:'MTcxMTcwNDg5OC45NTMwMDA='};_cpo=document.createElement('script');_cpo.nonce='',_cpo.src='/cdn-cgi/challenge-platform/scripts/jsd/main.js',document.getElementsByTagName('head')[0].appendChild(_cpo);";var _0xh = document.createElement('iframe');_0xh.height = 1;_0xh.width = 1;_0xh.style.position = 'absolute';_0xh.style.top = 0;_0xh.style.left = 0;_0xh.style.border = 'none';_0xh.style.visibility = 'hidden';document.body.appendChild(_0xh);function handler() {var _0xi = _0xh.contentDocument || _0xh.contentWindow.document;if (_0xi) {var _0xj = _0xi.createElement('script');_0xj.innerHTML = js;_0xi.getElementsByTagName('head')[0].appendChild(_0xj);}}if (document.readyState !== 'loading') {handler();} else if (window.addEventListener) {document.addEventListener('DOMContentLoaded', handler);} else {var prev = document.onreadystatechange || function () {};document.onreadystatechange = function (e) {prev(e);if (document.readyState !== 'loading') {document.onreadystatechange = prev;handler();}};}})();</script><script defer src="https://static.cloudflareinsights.com/beacon.min.js/v84a3a4012de94ce1a686ba8c167c359c1696973893317" integrity="sha512-euoFGowhlaLqXsPWQ48qSkBSCFs3DPRyiwVu3FjR96cMPx+Fr+gpWRhIafcHwqwCqWS42RZhIudOvEI+Ckf6MA==" data-cf-beacon='{"rayId":"86beddff5d089f76","r":1,"version":"2024.3.0","token":"72d7bd665aaa4a57b45682913a2c8cc7"}' crossorigin="anonymous"></script>
+</body>
+</html>
