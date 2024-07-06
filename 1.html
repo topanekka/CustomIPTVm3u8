@@ -1,0 +1,45 @@
+<style>body {
+ background: #222;
+ background: radial-gradient(#000, hsl(200deg, 30%, 6%));
+ color: #aaa;
+ font-family: Questrial, Arial, Helvetica, Sans Serif;
+ margin-top: 8px;
+}
+
+h1 {
+ font-size: 1.2em;
+ font-weight: normal;
+ font-family: Questrial;
+ text-align: center;
+ color: #fff;
+}
+
+h2 { 
+ text-align: center;
+ color: #ff0048;
+}
+
+h3 { 
+ text-align: center;
+ color: #fff
+}
+
+.vjs-icon-captions:before,
+.vjs-cosmos:lang(en) .vjs-subs-caps-button .vjs-icon-placeholder:before,
+.vjs-cosmos:lang(fr-CA) .vjs-subs-caps-button .vjs-icon-placeholder:before,
+.vjs-cosmos .vjs-captions-button .vjs-icon-placeholder:before {
+  content: "\f165";
+}
+
+</style>
+
+ <div class="player-container">
+    <video-js id="cosmos-player" class="vjs-cosmos vjs-16-9 vjs-show-big-play-button-on-pause" controls poster="https://raw.githubusercontent.com/EmilioSG11/videojs-cosmos-skin/main/images/bbunny.jpg" playsinline> 
+      <source src="https://test-streams.mux.dev/x36xhzz/x36xhzz.m3u8" type="" />
+
+       
+
+       <!-- Subtitles, Chapters, etc -->
+      <!-- <track kind="" src="" srclang="" label="" default> -->
+    </video-js>
+  </div>
